@@ -1,15 +1,22 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { WebView } from 'react-native-webview';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import SetupScreen, { SETUP_COMPLETE_KEY } from './screens/SetupScreen';
 import branchConfig from './branch.config';
 
 SplashScreen.preventAutoHideAsync();
 
-const Stack = createNativeStackNavigator();
+export type RootStackParamList = {
+  Setup: undefined;
+  Home: undefined;
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function HomeScreen() {
   const webViewRef = useRef<WebView>(null);
@@ -35,15 +42,30 @@ function HomeScreen() {
         domStorageEnabled
         allowsBackForwardNavigationGestures
       />
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
     </View>
   );
 }
 
 export default function App() {
+  const [initialRoute, setInitialRoute] = useState<keyof RootStackParamList | null>(null);
+
+  useEffect(() => {
+    AsyncStorage.getItem(SETUP_COMPLETE_KEY).then((value) => {
+      setInitialRoute(value === 'true' ? 'Home' : 'Setup');
+      SplashScreen.hideAsync();
+    });
+  }, []);
+
+  if (!initialRoute) return null;
+
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator
+        initialRouteName={initialRoute}
+        screenOptions={{ headerShown: false, animation: 'fade' }}
+      >
+        <Stack.Screen name="Setup" component={SetupScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
       </Stack.Navigator>
     </NavigationContainer>
@@ -53,7 +75,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0057A8',
+    backgroundColor: '#0F172A',
   },
   webview: {
     flex: 1,
@@ -66,6 +88,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#0F172A',
   },
 });
