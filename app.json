@@ -67,8 +67,9 @@
       "privacyPolicyUrl": "https://www.xyzfinancial.ph/privacy",
       "supportUrl": "https://www.xyzfinancial.ph/support",
       "eas": {
-        "projectId": "YOUR_EAS_PROJECT_ID"
+        "projectId": "7edf3601-6438-407b-8a02-d34f6da665c0"
       }
-    }
+    },
+    "owner": "amchrisgarcia"
   }
 }
