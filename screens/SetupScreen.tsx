@@ -28,16 +28,34 @@ type Props = {
 export const SETUP_COMPLETE_KEY = '@advisorai_setup_complete';
 export const SETUP_DATA_KEY = '@advisorai_setup_data';
 
+export type SetupData = {
+  branchName: string;
+  agentName: string;
+  googleEmail: string | null;
+  googleName: string | null;
+  sheetId: string;
+  accessToken: string | null;
+};
+
 export default function SetupScreen({ navigation }: Props) {
   const [branchName, setBranchName] = useState('');
   const [agentName, setAgentName] = useState('');
-  const [googleUser, setGoogleUser] = useState<{ email: string; name: string } | null>(null);
+  const [sheetId, setSheetId] = useState('');
+  const [googleUser, setGoogleUser] = useState<{
+    email: string;
+    name: string;
+    accessToken: string;
+  } | null>(null);
   const [signingIn, setSigningIn] = useState(false);
 
   const [, , promptAsync] = Google.useAuthRequest({
     clientId: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com',
     redirectUri: makeRedirectUri({ scheme: 'advisorai' }),
-    scopes: ['profile', 'email'],
+    scopes: [
+      'profile',
+      'email',
+      'https://www.googleapis.com/auth/spreadsheets',
+    ],
   });
 
   const handleGoogleSignIn = async () => {
@@ -45,11 +63,12 @@ export default function SetupScreen({ navigation }: Props) {
     try {
       const result = await promptAsync();
       if (result.type === 'success' && result.authentication?.accessToken) {
+        const token = result.authentication.accessToken;
         const res = await fetch('https://www.googleapis.com/userinfo/v2/me', {
-          headers: { Authorization: `Bearer ${result.authentication.accessToken}` },
+          headers: { Authorization: `Bearer ${token}` },
         });
         const user = await res.json();
-        setGoogleUser({ email: user.email, name: user.name });
+        setGoogleUser({ email: user.email, name: user.name, accessToken: token });
       }
     } catch {
       Alert.alert('Sign-in failed', 'Could not complete Google Sign-In.');
@@ -67,17 +86,22 @@ export default function SetupScreen({ navigation }: Props) {
       Alert.alert('Required', 'Please enter an Agent Name.');
       return;
     }
+    if (!sheetId.trim()) {
+      Alert.alert('Required', 'Please enter your Google Sheet ID.');
+      return;
+    }
+
+    const data: SetupData = {
+      branchName: branchName.trim(),
+      agentName: agentName.trim(),
+      googleEmail: googleUser?.email ?? null,
+      googleName: googleUser?.name ?? null,
+      sheetId: sheetId.trim(),
+      accessToken: googleUser?.accessToken ?? null,
+    };
 
     await AsyncStorage.setItem(SETUP_COMPLETE_KEY, 'true');
-    await AsyncStorage.setItem(
-      SETUP_DATA_KEY,
-      JSON.stringify({
-        branchName: branchName.trim(),
-        agentName: agentName.trim(),
-        googleEmail: googleUser?.email ?? null,
-        googleName: googleUser?.name ?? null,
-      })
-    );
+    await AsyncStorage.setItem(SETUP_DATA_KEY, JSON.stringify(data));
 
     navigation.replace('Home');
   };
@@ -92,7 +116,6 @@ export default function SetupScreen({ navigation }: Props) {
         keyboardShouldPersistTaps="handled"
       >
         <Image source={require('../assets/icon.png')} style={styles.logo} />
-
         <Text style={styles.title}>Welcome to AdvisorAI</Text>
         <Text style={styles.subtitle}>Set up your advisor profile to get started.</Text>
 
@@ -116,8 +139,23 @@ export default function SetupScreen({ navigation }: Props) {
             placeholder="e.g. Jane Smith"
             placeholderTextColor="#6B7280"
             autoCapitalize="words"
+            returnKeyType="next"
+          />
+
+          <Text style={styles.label}>Google Sheet ID</Text>
+          <TextInput
+            style={styles.input}
+            value={sheetId}
+            onChangeText={setSheetId}
+            placeholder="Paste Sheet ID from URL"
+            placeholderTextColor="#6B7280"
+            autoCapitalize="none"
+            autoCorrect={false}
             returnKeyType="done"
           />
+          <Text style={styles.hint}>
+            From the Sheet URL: /spreadsheets/d/<Text style={styles.hintHighlight}>SHEET_ID</Text>/edit
+          </Text>
 
           <TouchableOpacity
             style={[styles.googleBtn, googleUser ? styles.googleBtnDone : null]}
@@ -131,13 +169,19 @@ export default function SetupScreen({ navigation }: Props) {
               <>
                 <Text style={styles.googleIcon}>G</Text>
                 <Text style={styles.googleBtnText}>
-                  {googleUser ? `Signed in as ${googleUser.email}` : 'Sign in with Google'}
+                  {googleUser
+                    ? `✓  ${googleUser.email}`
+                    : 'Sign in with Google (Sheets access)'}
                 </Text>
               </>
             )}
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.completeBtn} onPress={handleComplete} activeOpacity={0.85}>
+          <TouchableOpacity
+            style={styles.completeBtn}
+            onPress={handleComplete}
+            activeOpacity={0.85}
+          >
             <Text style={styles.completeBtnText}>Get Started</Text>
           </TouchableOpacity>
         </View>
@@ -147,10 +191,7 @@ export default function SetupScreen({ navigation }: Props) {
 }
 
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: '#0F172A',
-  },
+  root: { flex: 1, backgroundColor: '#0F172A' },
   scroll: {
     flexGrow: 1,
     alignItems: 'center',
@@ -158,12 +199,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 28,
     paddingVertical: 48,
   },
-  logo: {
-    width: 88,
-    height: 88,
-    borderRadius: 20,
-    marginBottom: 24,
-  },
+  logo: { width: 88, height: 88, borderRadius: 20, marginBottom: 24 },
   title: {
     fontSize: 26,
     fontWeight: '700',
@@ -177,9 +213,7 @@ const styles = StyleSheet.create({
     marginBottom: 36,
     textAlign: 'center',
   },
-  form: {
-    width: '100%',
-  },
+  form: { width: '100%' },
   label: {
     fontSize: 13,
     fontWeight: '600',
@@ -197,6 +231,8 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: '#F9FAFB',
   },
+  hint: { fontSize: 11, color: '#6B7280', marginTop: 5 },
+  hintHighlight: { color: '#DC2626' },
   googleBtn: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -209,19 +245,9 @@ const styles = StyleSheet.create({
     marginTop: 24,
     gap: 10,
   },
-  googleBtnDone: {
-    borderColor: '#16A34A',
-  },
-  googleIcon: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#DC2626',
-  },
-  googleBtnText: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#F9FAFB',
-  },
+  googleBtnDone: { borderColor: '#16A34A' },
+  googleIcon: { fontSize: 16, fontWeight: '700', color: '#DC2626' },
+  googleBtnText: { fontSize: 15, fontWeight: '600', color: '#F9FAFB' },
   completeBtn: {
     backgroundColor: '#DC2626',
     borderRadius: 10,
@@ -229,9 +255,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
   },
-  completeBtnText: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#fff',
-  },
+  completeBtnText: { fontSize: 16, fontWeight: '700', color: '#fff' },
 });
