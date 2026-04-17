@@ -18,7 +18,10 @@
     "submit:android": "eas submit --platform android --profile production",
     "update": "eas update --auto",
     "generate:assets": "node scripts/generate-assets.js",
-    "generate:screenshots": "node scripts/generate-screenshots.js"
+    "generate:screenshots": "node scripts/generate-screenshots.js",
+    "setup-buyer": "node scripts/setup-buyer.mjs",
+    "setup-buyer:preset": "node scripts/setup-buyer.mjs --preset",
+    "apply-buyer": "node scripts/apply-buyer-preset.mjs"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^3.0.2",
@@ -40,7 +43,9 @@
   },
   "devDependencies": {
     "@types/react": "~18.2.45",
+    "chalk": "^5.6.2",
     "eas-cli": "^18.7.0",
+    "inquirer": "^9.3.8",
     "sharp": "^0.34.5",
     "typescript": "~5.9.2"
   },

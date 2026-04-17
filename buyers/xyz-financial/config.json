@@ -1,0 +1,28 @@
+{
+  "appName": "XYZ Financial Advisor",
+  "logoFile": "icon.png",
+  "primaryColor": "#1D4ED8",
+  "backgroundColor": "#0F172A",
+  "splashBackgroundColor": "#0F172A",
+
+  "branchName": "XYZ Financial",
+  "agentName": "Jordan Reyes",
+  "location": "88 Commerce Blvd, Suite 400, Manila, PH 1000",
+  "phone": "+63 2 8000 0000",
+  "email": "jordan.reyes@xyzfinancial.ph",
+
+  "calendlyUrl": "https://calendly.com/jordan-reyes-xyz",
+  "messengerPageId": "100094123456789",
+  "n8nWebhook": "https://n8n.xyzfinancial.ph/webhook/leads",
+  "googleSheetsKey": "AIzaSyXYZFinancialDummyKey1234567890",
+  "appsScriptUrl": "https://script.google.com/macros/s/XYZFinancialScriptId/exec",
+
+  "webviewUrl": "https://www.prubsq.com",
+  "assessmentUrl": "https://www.prubsq.com/assessment",
+  "resultsUrl": "https://www.prubsq.com/results",
+
+  "bundleId": "com.xyzfinancial.advisorai",
+  "androidPackage": "com.xyzfinancial.advisorai",
+  "privacyPolicyUrl": "https://www.xyzfinancial.ph/privacy",
+  "supportUrl": "https://www.xyzfinancial.ph/support"
+}

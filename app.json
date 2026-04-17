@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "AdvisorAI",
+    "name": "XYZ Financial Advisor",
     "slug": "advisorai",
     "version": "1.0.0",
     "runtimeVersion": {
@@ -10,17 +10,15 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "scheme": "advisorai",
-    "primaryColor": "#DC2626",
-
+    "primaryColor": "#1D4ED8",
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#0F172A"
     },
-
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.advisorai.app",
+      "bundleIdentifier": "com.xyzfinancial.advisorai",
       "buildNumber": "1",
       "infoPlist": {
         "NSCameraUsageDescription": "AdvisorAI does not use the camera.",
@@ -34,24 +32,21 @@
         }
       }
     },
-
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0F172A"
       },
-      "package": "com.advisorai.app",
+      "package": "com.xyzfinancial.advisorai",
       "versionCode": 1,
       "permissions": [
         "INTERNET",
         "ACCESS_NETWORK_STATE"
       ]
     },
-
     "web": {
       "favicon": "./assets/favicon.png"
     },
-
     "plugins": [
       "expo-splash-screen",
       [
@@ -68,10 +63,9 @@
         }
       ]
     ],
-
     "extra": {
-      "privacyPolicyUrl": "https://www.prubsq.com/privacy-policy",
-      "supportUrl": "https://www.prubsq.com/support",
+      "privacyPolicyUrl": "https://www.xyzfinancial.ph/privacy",
+      "supportUrl": "https://www.xyzfinancial.ph/support",
       "eas": {
         "projectId": "YOUR_EAS_PROJECT_ID"
       }
