@@ -22,7 +22,9 @@ import { RootStackParamList } from '../App';
 WebBrowser.maybeCompleteAuthSession();
 
 type Props = {
-  navigation: NativeStackNavigationProp<RootStackParamList, 'Setup'>;
+  navigation: NativeStackNavigationProp<RootStackParamList, 'Setup'> & {
+    replace: (name: 'Main') => void;
+  };
 };
 
 export const SETUP_COMPLETE_KEY = '@advisorai_setup_complete';
@@ -103,7 +105,7 @@ export default function SetupScreen({ navigation }: Props) {
     await AsyncStorage.setItem(SETUP_COMPLETE_KEY, 'true');
     await AsyncStorage.setItem(SETUP_DATA_KEY, JSON.stringify(data));
 
-    navigation.replace('Home');
+    navigation.replace('Main');
   };
 
   return (
