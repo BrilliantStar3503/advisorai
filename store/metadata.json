@@ -1,0 +1,36 @@
+{
+  "apple": {
+    "info": {
+      "en-US": {
+        "title": "AdvisorAI",
+        "subtitle": "Your PRU BSQ Advisor App",
+        "description": "AdvisorAI connects clients with their PRU BSQ financial advisor. Complete assessments, review results, and stay in touch — all in one place.\n\nFeatures:\n• Run financial assessments directly in-app\n• Results routed automatically to your advisor's dashboard\n• Secure Google Sheets integration for lead tracking\n• Dark-themed, minimal interface built for advisors",
+        "keywords": [
+          "financial advisor",
+          "insurance",
+          "assessment",
+          "PRU BSQ",
+          "leads",
+          "advisor"
+        ],
+        "releaseNotes": "Initial release.",
+        "privacyPolicyUrl": "https://www.prubsq.com/privacy-policy",
+        "supportUrl": "https://www.prubsq.com/support",
+        "marketingUrl": "https://www.prubsq.com",
+        "category": "FINANCE",
+        "secondaryCategory": "BUSINESS"
+      }
+    }
+  },
+  "android": {
+    "primaryLocale": "en-US",
+    "info": {
+      "en-US": {
+        "title": "AdvisorAI",
+        "shortDescription": "PRU BSQ advisor app for assessments and lead tracking.",
+        "fullDescription": "AdvisorAI connects clients with their PRU BSQ financial advisor. Complete assessments, review results, and stay in touch — all in one place.\n\nFeatures:\n• Run financial assessments directly in-app\n• Results routed automatically to your advisor's dashboard\n• Secure Google Sheets integration for lead tracking\n• Dark-themed, minimal interface built for advisors",
+        "video": ""
+      }
+    }
+  }
+}

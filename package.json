@@ -6,7 +6,19 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "build:dev:ios": "eas build --platform ios --profile development",
+    "build:dev:android": "eas build --platform android --profile development",
+    "build:preview:ios": "eas build --platform ios --profile preview",
+    "build:preview:android": "eas build --platform android --profile preview",
+    "build:prod:ios": "eas build --platform ios --profile production",
+    "build:prod:android": "eas build --platform android --profile production",
+    "build:prod:all": "eas build --platform all --profile production",
+    "submit:ios": "eas submit --platform ios --profile production",
+    "submit:android": "eas submit --platform android --profile production",
+    "update": "eas update --auto",
+    "generate:assets": "node scripts/generate-assets.js",
+    "generate:screenshots": "node scripts/generate-screenshots.js"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^3.0.2",
@@ -15,6 +27,7 @@
     "@react-navigation/native-stack": "^6.11.0",
     "expo": "~51.0.0",
     "expo-auth-session": "^55.0.14",
+    "expo-build-properties": "^55.0.13",
     "expo-crypto": "^55.0.14",
     "expo-splash-screen": "^0.27.7",
     "expo-status-bar": "~1.12.1",
@@ -27,6 +40,7 @@
   },
   "devDependencies": {
     "@types/react": "~18.2.45",
+    "eas-cli": "^18.7.0",
     "sharp": "^0.34.5",
     "typescript": "~5.9.2"
   },

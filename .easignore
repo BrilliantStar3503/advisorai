@@ -1,0 +1,7 @@
+# Files excluded from EAS Build uploads
+node_modules/
+.git/
+store/screenshots/
+secrets/
+*.log
+.env*

@@ -3,31 +3,78 @@
     "name": "AdvisorAI",
     "slug": "advisorai",
     "version": "1.0.0",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "scheme": "advisorai",
+    "primaryColor": "#DC2626",
+
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#0F172A"
     },
+
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.advisorai.app"
+      "supportsTablet": false,
+      "bundleIdentifier": "com.advisorai.app",
+      "buildNumber": "1",
+      "infoPlist": {
+        "NSCameraUsageDescription": "AdvisorAI does not use the camera.",
+        "NSPhotoLibraryUsageDescription": "AdvisorAI does not access your photos.",
+        "NSFaceIDUsageDescription": "AdvisorAI does not use Face ID.",
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "YOUR_REVERSED_CLIENT_ID"
+        }
+      }
     },
+
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0F172A"
       },
-      "package": "com.advisorai.app"
+      "package": "com.advisorai.app",
+      "versionCode": 1,
+      "permissions": [
+        "INTERNET",
+        "ACCESS_NETWORK_STATE"
+      ]
     },
+
     "web": {
       "favicon": "./assets/favicon.png"
     },
+
     "plugins": [
-      "expo-splash-screen"
-    ]
+      "expo-splash-screen",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "15.1"
+          },
+          "android": {
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
+            "minSdkVersion": 24
+          }
+        }
+      ]
+    ],
+
+    "extra": {
+      "privacyPolicyUrl": "https://www.prubsq.com/privacy-policy",
+      "supportUrl": "https://www.prubsq.com/support",
+      "eas": {
+        "projectId": "YOUR_EAS_PROJECT_ID"
+      }
+    }
   }
 }
